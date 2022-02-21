@@ -2,9 +2,11 @@
   <div id="nav">
     <router-link to="/">Home</router-link>
     |
-    <router-link :to="{name: 'register'}">Register</router-link>
+    <router-link :to="{ name: 'register' }">Register</router-link>
+    |
+    <router-link :to="{ name: 'login' }">Login</router-link>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
