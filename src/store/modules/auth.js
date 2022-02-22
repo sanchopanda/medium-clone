@@ -8,20 +8,32 @@ const state = {
   isLoggedIn: null,
 };
 
-export const mutationTypes= {
+export const mutationTypes = {
   registerStart: "[auth] registerStart",
   registerSucces: "[auth] registerSucces",
   registerFailure: "[auth] registerFailure",
 
   loginStart: "[auth] loginStart",
   loginSucces: "[auth] loginSucces",
-  loginFailure: "[auth] loginFailure"
-}
+  loginFailure: "[auth] loginFailure",
+};
 
-export const actionTypes= {
+export const actionTypes = {
   register: "[auth] register",
-  login: "[auth] login"
-}
+  login: "[auth] login",
+};
+
+export const getterTypes = {
+  currentUser: "[auth] currentUser",
+  isLoggedIn: "[auth] isLoggedIn",
+  isAnonymous: "[auth]  isAnonymous",
+};
+
+const getters = {
+  [getterTypes.currentUser]: (state) => state.currentUser,
+  [getterTypes.isLoggedIn]: (state) => Boolean(state.isLoggedIn),
+  [getterTypes.isAnonymous]: (state) => state.isLoggedIn === false,
+};
 
 const mutations = {
   [mutationTypes.registerStart](state) {
@@ -65,11 +77,14 @@ const actions = {
         .register(credentials)
         .then((response) => {
           context.commit(mutationTypes.registerSucces, response.data.user);
-          setItem('accessToken', response.data.user.token)
+          setItem("accessToken", response.data.user.token);
           resolve(response.data.user);
         })
         .catch((result) => {
-          context.commit(mutationTypes.registerFailure, result.response.data.errors);
+          context.commit(
+            mutationTypes.registerFailure,
+            result.response.data.errors
+          );
         });
     });
   },
@@ -80,18 +95,22 @@ const actions = {
         .login(credentials)
         .then((response) => {
           context.commit(mutationTypes.loginSucces, response.data.user);
-          setItem('accessToken', response.data.user.token)
+          setItem("accessToken", response.data.user.token);
           resolve(response.data.user);
         })
         .catch((result) => {
-          context.commit(mutationTypes.loginFailure, result.response.data.errors);
+          context.commit(
+            mutationTypes.loginFailure,
+            result.response.data.errors
+          );
         });
     });
-  }
+  },
 };
 
 export default {
   state,
   mutations,
   actions,
+  getters,
 };
