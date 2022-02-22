@@ -7,7 +7,10 @@
           <p class="text-xs-center">
             <router-link :to="{ name: 'login' }">Have an account?</router-link>
           </p>
-          <mcv-validation-errors v-if="validationErrors" :validation-errors="validationErrors"/>
+          <mcv-validation-errors
+            v-if="validationErrors"
+            :validation-errors="validationErrors"
+          />
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
@@ -48,13 +51,14 @@
 </template>
 
 <script>
-import McvValidationErrors from '@/components/ValidationErrors';
-import {actionTypes} from '@/store/modules/auth'
+import McvValidationErrors from "@/components/ValidationErrors";
+import { actionTypes } from "@/store/modules/auth";
+import { mapState } from "vuex";
 
 export default {
   name: "McvRegister",
   components: {
-    McvValidationErrors
+    McvValidationErrors,
   },
   data() {
     return {
@@ -64,23 +68,21 @@ export default {
     };
   },
   computed: {
-    isSubmiting() {
-      return this.$store.state.auth.isSubmiting;
-    },
-    validationErrors() {
-      return this.$store.state.auth.validationErrors;
-    }
+    ...mapState({
+      isSubmiting: state => state.auth.isSubmiting,
+      validationErrors: state => state.auth.validationErrors
+    }) 
   },
   methods: {
     onSubmit() {
       this.$store
-        .dispatch(actionTypes.register , {
+        .dispatch(actionTypes.register, {
           email: this.email,
           username: this.username,
           password: this.password,
         })
         .then(() => {
-          this.$router.push({name: 'home'});
+          this.$router.push({ name: "home" });
         });
     },
   },
