@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="isLoading">Loading...</div>
+    <mcv-loading v-if="isLoading" />
 
-    <div v-if="error">Error</div>
+    <mcv-error-message v-if="error" />
 
     <div v-if="feed">
       <div
@@ -61,6 +61,8 @@ import { actionTypes } from "@/store/modules/feed";
 import McvPagination from "@/components/Pagination";
 import { limit } from "@/helpers/vars";
 import { stringify, parseUrl } from "query-string";
+import McvLoading from "@/components/Loading";
+import McvErrorMessage from "@/components/ErrorMessage";
 
 export default {
   name: "McvFeed",
@@ -72,10 +74,12 @@ export default {
   },
   components: {
     McvPagination,
+    McvLoading,
+    McvErrorMessage,
   },
   data() {
     return {
-      limit,     
+      limit,
     };
   },
   computed: {
@@ -85,19 +89,19 @@ export default {
       error: (state) => state.feed.error,
     }),
     currentPage() {
-      return Number(this.$route.query.page || '1');
+      return Number(this.$route.query.page || "1");
     },
     baseUrl() {
       return this.$route.path;
     },
     offset() {
-      return this.currentPage * limit - limit
-    }
+      return this.currentPage * limit - limit;
+    },
   },
   watch: {
     currentPage() {
-       this.fetchFeed();
-    }
+      this.fetchFeed();
+    },
   },
   mounted() {
     this.fetchFeed();
@@ -108,11 +112,11 @@ export default {
       const stringifiedParams = stringify({
         limit,
         offset: 0,
-        ...parsedUrl.query
-      })
-      const apiUrlWitchParams = `${parsedUrl.url}?${stringifiedParams}`
+        ...parsedUrl.query,
+      });
+      const apiUrlWitchParams = `${parsedUrl.url}?${stringifiedParams}`;
       this.$store.dispatch(actionTypes.getFeed, { apiUrl: apiUrlWitchParams });
-    }
-  }
+    },
+  },
 };
 </script>
