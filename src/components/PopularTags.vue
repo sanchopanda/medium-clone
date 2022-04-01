@@ -33,7 +33,7 @@ export default {
   },
   components: {
     McvLoading,
-    McvErrorMessage
+    McvErrorMessage 
   },
   mounted() {
     this.fetchTags();
