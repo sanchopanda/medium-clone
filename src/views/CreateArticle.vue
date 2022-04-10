@@ -1,6 +1,6 @@
 <template>
   <mcv-article-form
-    :initial-values="inititalValues"
+    :initial-values="initialValues"
     :errors="validationErrors"
     :is-submiting="isSubmiting"
     @articleSubmit="onSubmit"
@@ -35,7 +35,7 @@ export default {
   methods: {
     onSubmit(articleInput) {
       this.$store
-        .dispatch(actionTypes.createArticle, { articleInput: articleInput })
+        .dispatch(actionTypes.createArticle, { articleInput })
         .then((article) => {
           this.$router.push({
             name: "article",
