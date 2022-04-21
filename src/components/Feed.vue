@@ -111,6 +111,9 @@ export default {
     currentPage() {
       this.fetchFeed();
     },
+    apiUrl() {
+      this.fetchFeed();
+    }
   },
   mounted() {
     this.fetchFeed();
